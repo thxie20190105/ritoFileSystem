@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Properties;
+import java.util.Set;
 
 
 /**
@@ -34,13 +36,18 @@ public class JobService {
     private void start() throws SchedulerException {
         try {
             inti();
-            if (AppConstant.ZERO.equals(JobService.hashMap.get("systemType"))) {
-                execute(new APP000000Server());
-            } else if (AppConstant.ONE.equals(JobService.hashMap.get("systemType"))) {
-                execute(new APP000001Server());
-            } else {
-                LOGGER.info("需要配置");
+            String[] strings = JobService.hashMap.get("systemType").split(",");
+            for (int i = 0, j = strings.length; i < j; i++) {
+                if (AppConstant.ZERO.equals(JobService.hashMap.get("systemType"))) {
+                    execute(new APP000000Server());
+                }
+                if (AppConstant.ONE.equals(JobService.hashMap.get("systemType"))) {
+                    execute(new APP000001Server());
+                } else {
+                    LOGGER.info("需要配置");
+                }
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
