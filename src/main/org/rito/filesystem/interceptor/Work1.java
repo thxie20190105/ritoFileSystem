@@ -1,6 +1,7 @@
 package org.rito.filesystem.interceptor;
 
 
+import com.sun.management.OperatingSystemMXBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -8,6 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.lang.management.ManagementFactory;
 import java.sql.Timestamp;
 
 /**
@@ -47,7 +49,19 @@ public class Work1 implements HandlerInterceptor {
         System.out.print("JVM已用空间" + vmUse + "MB\t");
         System.out.print("JVM空闲空间" + vmFree + "MB\t");
         System.out.print("JVM总空间" + vmTotal + "MB\t");
-        System.out.println("JVM最大空间" + vmMax + "MB\t");
+        System.out.println("JVM可用最大空间" + vmMax + "MB\t");
+
+
+        // 操作系统级内存情况查询
+        OperatingSystemMXBean osmxb = (OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
+        String os = System.getProperty("os.name");
+        long physicalFree = osmxb.getFreePhysicalMemorySize() / byteToMb;
+        long physicalTotal = osmxb.getTotalPhysicalMemorySize() / byteToMb;
+        long physicalUse = physicalTotal - physicalFree;
+        System.out.print("操作系统的版本：" + os + "\t");
+        System.out.print("操作系统物理内存已用的空间为：" + physicalFree + " MB\t");
+        System.out.print("操作系统物理内存的空闲空间为：" + physicalUse + " MB\t");
+        System.out.println("操作系统总物理内存：" + physicalTotal + " MB\t");
     }
 
     @Override
