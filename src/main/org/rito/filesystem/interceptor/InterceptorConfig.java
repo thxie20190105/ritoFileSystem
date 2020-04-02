@@ -19,8 +19,8 @@ public class InterceptorConfig implements WebMvcConfigurer {
         //addInterceptor    用于添加拦截器到拦截链中
         //只有走DispatcherServlet的请求才会走拦截器链
 
-        //registry.addInterceptor(work1()).addPathPatterns("/*");
-        registry.addInterceptor(work2()).addPathPatterns("/*");
+        registry.addInterceptor(work1()).addPathPatterns("/*");
+        //registry.addInterceptor(work2()).addPathPatterns("/*");
     }
 
     @Bean
