@@ -15,11 +15,11 @@ public class TestController {
     @ResponseBody
     public String a() {
         try {
-            Thread.sleep(1000);
+            Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println("请求来了");
+        Integer.parseInt("");
         return "Hallo";
     }
 

@@ -20,16 +20,11 @@ public class InterceptorConfig implements WebMvcConfigurer {
         //只有走DispatcherServlet的请求才会走拦截器链
 
         registry.addInterceptor(work1()).addPathPatterns("/*");
-        //registry.addInterceptor(work2()).addPathPatterns("/*");
     }
 
     @Bean
-    public Work1 work1() {
-        return new Work1();
+    public InterceptorCalculateRequestTime work1() {
+        return new InterceptorCalculateRequestTime();
     }
 
-    @Bean
-    public Work2 work2() {
-        return new Work2();
-    }
 }
