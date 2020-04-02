@@ -33,11 +33,12 @@ public class InterceptorCalculateRequestTime implements HandlerInterceptor {
      * @param request
      * @param response
      * @param handler
-     * @param modelAndView 如果执行过程中报错了那么在这里计算时间没有意义
+     * @param modelAndView 如果执行过程中报错了那么在这里计算时间没有意义，但是可以看出渲染需要多长时间
      * @throws Exception
      */
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+        computeConsumeTime(request, "处理完成时");
         printMemory(request);
     }
 
@@ -50,15 +51,15 @@ public class InterceptorCalculateRequestTime implements HandlerInterceptor {
      */
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-        computeConsumeTime(request);
+        computeConsumeTime(request, "请求结束时");
         printMemory(request);
 
     }
 
-    private void computeConsumeTime(HttpServletRequest request) {
+    private void computeConsumeTime(HttpServletRequest request, String processName) {
         String requestId = (String) request.getAttribute("requestId");
         long startTime = (long) request.getAttribute("requestStartTime");
-        System.out.println("请求Id\t" + requestId + "\t共花费" + (System.currentTimeMillis() - startTime) / 1000 + "秒");
+        System.out.println("请求Id\t" + requestId + "\t" + processName + "共花费" + (System.currentTimeMillis() - startTime) / 1000 + "秒");
     }
 
     private void printMemory(HttpServletRequest request) {
