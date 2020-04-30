@@ -1,5 +1,6 @@
 package org.rito.filesystem.util;
 
+import org.rito.filesystem.JobService;
 import org.rito.filesystem.constant.Constant;
 import org.slf4j.LoggerFactory;
 
@@ -24,7 +25,9 @@ public class SaveFileAndEncryptAndDecode {
     public static String saveEncryptFile(InputStream inputStream, String fileName) {
         //指定一次读多少字节
         byte[] bytes = new byte[1024];
-        String filePath = SftpClientUtil.getMap().get(Constant.ftpLocalFileDir) + fileName;
+
+        //获得本地路径
+        String filePath = JobService.getHashMap().get(Constant.ftp_Local_File_Dir) + fileName;
 
         OutputStream outputStream = null;
         try {
@@ -65,9 +68,11 @@ public class SaveFileAndEncryptAndDecode {
      * @param filepath
      */
     public static void decode(String filepath) {
-        String strPrivateKeyFile = SftpClientUtil.getMap().get(Constant.privateKeyFile);
-        String strFtpLocalFileDir = SftpClientUtil.getMap().get(Constant.ftpLocalFileDir);
-        String passwd = SftpClientUtil.getMap().get(Constant.passwd);
+        //获得私钥路径
+        String strPrivateKeyFile = JobService.getHashMap().get(Constant.private_Key_File_Path);
+
+
+        String passwd = JobService.getHashMap().get(Constant.passwd);
 
 
         FileInputStream cipheredFileIs = null;
@@ -77,7 +82,8 @@ public class SaveFileAndEncryptAndDecode {
         try {
             cipheredFileIs = new FileInputStream(new File(filepath));
             privKeyIn = new FileInputStream(new File(strPrivateKeyFile));
-            plainTextFileIs = new FileOutputStream(strFtpLocalFileDir);
+            //解密后的文件名
+            plainTextFileIs = new FileOutputStream(new File(filepath + ".bak"));
             PgpUtils.getInstance().decryptFile(cipheredFileIs, plainTextFileIs, privKeyIn, passwd.toCharArray());
             cipheredFileIs.close();
             plainTextFileIs.close();

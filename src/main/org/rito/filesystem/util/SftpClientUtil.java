@@ -1,29 +1,17 @@
 package org.rito.filesystem.util;
 
 import com.jcraft.jsch.*;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.stereotype.Component;
+import org.rito.filesystem.JobService;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
 
 /**
  * @author xigua
  * @date 2020/4/29
  **/
-@Component
-public class SftpClientUtil implements InitializingBean {
+public class SftpClientUtil {
     private static String cfgPath = "src/main/resources/config/sftp.properties";
-    private static Map<String, String> map = new HashMap<>();
-
-    public static Map<String, String> getMap() {
-        return map;
-    }
 
     /**
      * 创建一个新的sftp连接
@@ -36,10 +24,10 @@ public class SftpClientUtil implements InitializingBean {
 
     private static ChannelSftp init() {
 
-        String userName = map.get("userName");
-        String hostName = map.get("hostName");
-        String port = map.get("port");
-        String password = map.get("password");
+        String userName = JobService.getHashMap().get("userName");
+        String hostName = JobService.getHashMap().get("hostName");
+        String port = JobService.getHashMap().get("port");
+        String password = JobService.getHashMap().get("password");
         ChannelSftp sftp = null;
         try {
 
@@ -60,30 +48,7 @@ public class SftpClientUtil implements InitializingBean {
 
     }
 
-    private static void initCfgMap() {
-        Properties properties = new Properties();
-        InputStream inputStream = null;
 
-        try {
-            inputStream = new FileInputStream(cfgPath);
-            properties.load(inputStream);
-            //需要什么直接从set里面取
-            Set<String> strings = properties.stringPropertyNames();
-            for (String value : strings) {
-                map.put(value, properties.getProperty(value));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (inputStream != null) {
-                    inputStream.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
 
 
     /**
@@ -122,8 +87,5 @@ public class SftpClientUtil implements InitializingBean {
         sftp.disconnect();
     }
 
-    @Override
-    public void afterPropertiesSet() {
-        initCfgMap();
-    }
+
 }

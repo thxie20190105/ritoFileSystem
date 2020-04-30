@@ -109,17 +109,17 @@ public class PgpUtils {
      * corresponding to keyID if it exists.
      *
      * @param keyIn input stream representing a key ring collection.
-     * @param keyID keyID we want.
+     * @param keyId keyID we want.
      * @param pass  passphrase to decrypt secret key with.
      * @return
      * @throws IOException
      * @throws PGPException
      */
-    public PGPPrivateKey findSecretKey(InputStream keyIn, long keyID, char[] pass)
+    public PGPPrivateKey findSecretKey(InputStream keyIn, long keyId, char[] pass)
             throws IOException, PGPException {
         PGPSecretKeyRingCollection pgpSec = new PGPSecretKeyRingCollection(PGPUtil.getDecoderStream(keyIn));
 
-        PGPSecretKey pgpSecKey = pgpSec.getSecretKey(keyID);
+        PGPSecretKey pgpSecKey = pgpSec.getSecretKey(keyId);
 
         if (pgpSecKey == null) {
             return null;

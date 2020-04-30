@@ -25,6 +25,12 @@ public class JobService {
 
     static HashMap<String, String> hashMap;
 
+    private static String confFileName = "src/main/resources/config/sftp.properties";
+
+
+    public static HashMap<String, String> getHashMap() {
+        return hashMap;
+    }
 
     /**
      * 启动所有任务
@@ -68,8 +74,8 @@ public class JobService {
 
         //设置触发器，默认30秒
         SimpleScheduleBuilder simpleScheduleBuilder = SimpleScheduleBuilder.simpleSchedule()
-                .withIntervalInSeconds(hashMap.get("ftpScanInterval") == null
-                        ? Constant.FTP_SCAN_INTERVAL : Integer.parseInt(hashMap.get("ftpScanInterval")))
+                .withIntervalInSeconds(hashMap.get(Constant.ftpScanInterval) == null
+                        ? Constant.FTP_SCAN_INTERVAL : Integer.parseInt(hashMap.get(Constant.ftpScanInterval)))
                 .repeatForever();
 
 
@@ -87,7 +93,6 @@ public class JobService {
         JobService.hashMap = new HashMap<>(16);
         Properties config = new Properties();
         InputStream inStream;
-        String confFileName = "src/main/resources/quartz.properties";
         inStream = new FileInputStream(confFileName);
         config.load(inStream);
         Set set = config.keySet();
