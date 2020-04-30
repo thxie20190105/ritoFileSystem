@@ -2,12 +2,12 @@ package org.rito.filesystem;
 
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
+import org.rito.filesystem.constant.Constant;
+import org.rito.filesystem.job.APP000000Server;
+import org.rito.filesystem.job.AbstractServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.xigua.study.quartz.constant.Constant;
-import org.xigua.study.quartz.job.APP000000Server;
-import org.xigua.study.quartz.job.AbstractServer;
 
 import java.io.FileInputStream;
 import java.io.InputStream;

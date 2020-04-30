@@ -1,9 +1,7 @@
 package org.rito.filesystem.util;
 
+import org.rito.filesystem.constant.Constant;
 import org.slf4j.LoggerFactory;
-import org.xigua.study.quartz.constant.Constant;
-import org.xigua.util.net.SftpClientUtil;
-import org.xigua.util.security.PgpUtils;
 
 import java.io.*;
 

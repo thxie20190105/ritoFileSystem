@@ -3,12 +3,12 @@ package org.rito.filesystem.job;
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.SftpException;
 import org.quartz.JobExecutionContext;
+import org.rito.filesystem.thread.DownloadSftpFile;
+import org.rito.filesystem.thread.ThreadPool;
+import org.rito.filesystem.util.SftpClientUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.xigua.study.quartz.thread.DownloadSftpFile;
-import org.xigua.study.quartz.thread.ThreadPool;
-import org.xigua.util.net.SftpClientUtil;
 
 import java.util.Iterator;
 import java.util.Vector;

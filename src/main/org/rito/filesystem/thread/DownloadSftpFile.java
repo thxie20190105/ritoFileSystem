@@ -1,10 +1,10 @@
 package org.rito.filesystem.thread;
 
 import com.jcraft.jsch.ChannelSftp;
+import org.rito.filesystem.util.SaveFileAndEncryptAndDecode;
+import org.rito.filesystem.util.SftpClientUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xigua.study.quartz.util.SaveFileAndEncryptAndDecode;
-import org.xigua.util.net.SftpClientUtil;
 
 import java.io.InputStream;
 
