@@ -1,11 +1,13 @@
-package org.rito.filesystem.server;
+package org.rito.filesystem;
 
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
-import org.rito.filesystem.AppConstant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.xigua.study.quartz.constant.Constant;
+import org.xigua.study.quartz.job.APP000000Server;
+import org.xigua.study.quartz.job.AbstractServer;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -23,6 +25,7 @@ public class JobService {
 
     static HashMap<String, String> hashMap;
 
+
     /**
      * 启动所有任务
      */
@@ -38,11 +41,9 @@ public class JobService {
             inti();
             String[] strings = JobService.hashMap.get("systemType").split(",");
             for (int i = 0, j = strings.length; i < j; i++) {
-                if (AppConstant.ZERO.equals(JobService.hashMap.get("systemType"))) {
+                if (Constant.ZERO.equals(strings[i])) {
+
                     execute(new APP000000Server());
-                }
-                if (AppConstant.ONE.equals(JobService.hashMap.get("systemType"))) {
-                    execute(new APP000001Server());
                 } else {
                     LOGGER.info("需要配置");
                 }
@@ -58,15 +59,24 @@ public class JobService {
     private void execute(AbstractServer o) throws SchedulerException {
         //调度器
         Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
+
+
         //具体工作内容
-        JobDetail jobDetail = JobBuilder.newJob(o.getClass()).withIdentity("job1", "group1").build();
+        JobDetail jobDetail = JobBuilder.newJob(o.getClass()).withIdentity(o.getClass().getName(),
+                o.getClass().getName() + "group").build();
+
+
         //设置触发器，默认30秒
         SimpleScheduleBuilder simpleScheduleBuilder = SimpleScheduleBuilder.simpleSchedule()
-                .withIntervalInSeconds(JobService.hashMap.get("ftpScanInterval") == null
-                        ? AppConstant.FTP_SCAN_INTERVAL : Integer.parseInt(JobService.hashMap.get("ftpScanInterval")))
+                .withIntervalInSeconds(hashMap.get("ftpScanInterval") == null
+                        ? Constant.FTP_SCAN_INTERVAL : Integer.parseInt(hashMap.get("ftpScanInterval")))
                 .repeatForever();
-        Trigger trigger = TriggerBuilder.newTrigger().withIdentity("trigger1", "group1")
+
+
+        Trigger trigger = TriggerBuilder.newTrigger().withIdentity(o.getClass().getName(), o.getClass().getName() + "group")
                 .startNow().withSchedule(simpleScheduleBuilder).build();
+
+
         //加入调度器管理
         scheduler.scheduleJob(jobDetail, trigger);
         //开始调度
@@ -77,7 +87,7 @@ public class JobService {
         JobService.hashMap = new HashMap<>(16);
         Properties config = new Properties();
         InputStream inStream;
-        String confFileName = "src/main/resources/config.properties";
+        String confFileName = "src/main/resources/quartz.properties";
         inStream = new FileInputStream(confFileName);
         config.load(inStream);
         Set set = config.keySet();
