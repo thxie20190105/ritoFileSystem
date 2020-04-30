@@ -28,9 +28,11 @@ public class DownloadSftpFile implements Runnable {
         LOGGER.info("当前线程" + Thread.currentThread().getName());
         LOGGER.info("下载文件名称" + fileName);
 
+        long start = System.currentTimeMillis();
         ChannelSftp sftp = SftpClientUtil.getSftp();
 
         InputStream inputStream = SftpClientUtil.downloadFile(sftp, fileName, "/");
+
 
         String filepath = SaveFileAndEncryptAndDecode.saveEncryptFile(inputStream, fileName);
 
@@ -38,7 +40,7 @@ public class DownloadSftpFile implements Runnable {
 
         //关闭连接
         SftpClientUtil.close(sftp);
-
+        LOGGER.info("下载文件名称" + fileName + "花费时间" + (System.currentTimeMillis() - start) / 1000 + "秒");
 
     }
 }

@@ -29,10 +29,11 @@ public class ThreadPool {
                 8,
                 1,
                 TimeUnit.DAYS,
-                new ArrayBlockingQueue<>(10),
+                new ArrayBlockingQueue<>(200),
                 new ThreadFactoryBuilder()
                         .setNameFormat("consumer-queue-thread-%d")
-                        .build()
+                        .build(),
+                new ThreadPoolExecutor.DiscardPolicy()
         );
 
     }

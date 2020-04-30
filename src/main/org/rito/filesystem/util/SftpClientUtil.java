@@ -3,7 +3,6 @@ package org.rito.filesystem.util;
 import com.jcraft.jsch.*;
 import org.rito.filesystem.JobService;
 
-import java.io.IOException;
 import java.io.InputStream;
 
 /**
@@ -49,10 +48,9 @@ public class SftpClientUtil {
     }
 
 
-
-
     /**
      * 下载文件
+     *
      *
      * @param sftp     新的sftp连接
      * @param fileName 文件名称
@@ -61,7 +59,7 @@ public class SftpClientUtil {
      */
     public static InputStream downloadFile(ChannelSftp sftp, String fileName, String filePath) {
 
-        InputStream inputStream = null;
+        InputStream inputStream;
 
         try {
 
@@ -70,14 +68,6 @@ public class SftpClientUtil {
             return inputStream;
         } catch (SftpException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                if (inputStream != null) {
-                    inputStream.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
         return null;
     }
