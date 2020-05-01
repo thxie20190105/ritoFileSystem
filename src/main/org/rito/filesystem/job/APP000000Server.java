@@ -37,7 +37,7 @@ public class APP000000Server extends AbstractServer {
 
                 if (fileName.endsWith(Constant.txt)) {
                     //加入线程池
-                    ThreadPool.addThread(new DownloadSftpFile(fileName));
+                    ThreadPool.addQuartzThread(new DownloadSftpFile(fileName));
                 }
 
             }
