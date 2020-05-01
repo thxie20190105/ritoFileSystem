@@ -1,6 +1,7 @@
 package org.rito.filesystem.thread;
 
 import com.jcraft.jsch.ChannelSftp;
+import org.rito.filesystem.constant.Constant;
 import org.rito.filesystem.util.SaveFileAndEncryptAndDecode;
 import org.rito.filesystem.util.SftpClientUtil;
 import org.slf4j.Logger;
@@ -31,7 +32,7 @@ public class DownloadSftpFile implements Runnable {
         long start = System.currentTimeMillis();
         ChannelSftp sftp = SftpClientUtil.getSftp();
 
-        InputStream inputStream = SftpClientUtil.downloadFile(sftp, fileName, "/");
+        InputStream inputStream = SftpClientUtil.downloadFile(sftp, fileName, Constant.sftpPath);
 
 
         String filepath = SaveFileAndEncryptAndDecode.saveEncryptFile(inputStream, fileName);
@@ -40,7 +41,9 @@ public class DownloadSftpFile implements Runnable {
 
         //关闭连接
         SftpClientUtil.close(sftp);
-        LOGGER.info("下载文件名称" + fileName + "花费时间" + (System.currentTimeMillis() - start) / 1000 + "秒");
+        long endTime = System.currentTimeMillis();
+
+        LOGGER.info("下载文件名称" + fileName + "花费时间" + (endTime - start) / 1000 + "秒");
 
     }
 }

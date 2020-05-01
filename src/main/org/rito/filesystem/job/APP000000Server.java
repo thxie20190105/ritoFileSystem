@@ -3,6 +3,7 @@ package org.rito.filesystem.job;
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.SftpException;
 import org.quartz.JobExecutionContext;
+import org.rito.filesystem.constant.Constant;
 import org.rito.filesystem.thread.DownloadSftpFile;
 import org.rito.filesystem.thread.ThreadPool;
 import org.rito.filesystem.util.SftpClientUtil;
@@ -28,13 +29,13 @@ public class APP000000Server extends AbstractServer {
         LOGGER.info("当前线程" + Thread.currentThread().getName());
         //创建ftp连接
         try {
-            Vector vector = SftpClientUtil.getSftp().ls("/");
+            Vector vector = SftpClientUtil.getSftp().ls(Constant.sftpPath);
             Iterator iterator = vector.iterator();
             while (iterator.hasNext()) {
                 ChannelSftp.LsEntry file = (ChannelSftp.LsEntry) iterator.next();
                 String fileName = file.getFilename();
 
-                if (fileName.endsWith("txt")) {
+                if (fileName.endsWith(Constant.txt)) {
                     //加入线程池
                     ThreadPool.addThread(new DownloadSftpFile(fileName));
                 }

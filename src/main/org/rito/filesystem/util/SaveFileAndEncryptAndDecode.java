@@ -18,9 +18,9 @@ public class SaveFileAndEncryptAndDecode {
     /**
      * 保存下载后密文
      *
-     * @param inputStream
-     * @param fileName
-     * @return
+     * @param inputStream 获得sftp的输入流
+     * @param fileName 文件名称
+     * @return 下载完成后的本地文件路径
      */
     public static String saveEncryptFile(InputStream inputStream, String fileName) {
         //指定一次读多少字节
@@ -65,7 +65,7 @@ public class SaveFileAndEncryptAndDecode {
     /**
      * 对文件进行解码
      *
-     * @param filepath
+     * @param filepath 需要解密的文件路径
      */
     public static void decode(String filepath) {
         //获得私钥路径
@@ -83,15 +83,11 @@ public class SaveFileAndEncryptAndDecode {
             cipheredFileIs = new FileInputStream(new File(filepath));
             privKeyIn = new FileInputStream(new File(strPrivateKeyFile));
             //解密后的文件名
-            plainTextFileIs = new FileOutputStream(new File(filepath + ".bak"));
+            plainTextFileIs = new FileOutputStream(new File(filepath + Constant.suffix));
             PgpUtils.getInstance().decryptFile(cipheredFileIs, plainTextFileIs, privKeyIn, passwd.toCharArray());
             cipheredFileIs.close();
             plainTextFileIs.close();
             privKeyIn.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

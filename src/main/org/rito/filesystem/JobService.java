@@ -23,9 +23,7 @@ import java.util.Set;
 public class JobService {
     private static final Logger LOGGER = LoggerFactory.getLogger(JobService.class);
 
-    static HashMap<String, String> hashMap;
-
-    private static String confFileName = "src/main/resources/config/sftp.properties";
+    private static HashMap<String, String> hashMap;
 
 
     public static HashMap<String, String> getHashMap() {
@@ -35,17 +33,17 @@ public class JobService {
     /**
      * 启动所有任务
      */
-    void startAll() throws SchedulerException {
+    void startAll() {
         start();
     }
 
     /**
      * 启动一个定时任务
      */
-    private void start() throws SchedulerException {
+    private void start() {
         try {
             inti();
-            String[] strings = JobService.hashMap.get("systemType").split(",");
+            String[] strings = JobService.hashMap.get(Constant.systemType).split(",");
             for (int i = 0, j = strings.length; i < j; i++) {
                 if (Constant.ZERO.equals(strings[i])) {
 
@@ -90,10 +88,10 @@ public class JobService {
     }
 
     private void inti() throws Exception {
-        JobService.hashMap = new HashMap<>(16);
+        hashMap = new HashMap<>(16);
         Properties config = new Properties();
         InputStream inStream;
-        inStream = new FileInputStream(confFileName);
+        inStream = new FileInputStream(Constant.cfgPath);
         config.load(inStream);
         Set set = config.keySet();
         for (Object o : set) {

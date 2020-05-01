@@ -20,15 +20,18 @@ public class ThreadPool {
 
 
     /**
+     * 核心线程17个、线程池最大30个
+     * 线程池中的线程1个小时没有工作自动销毁
+     * 任务队列200个，满了的话自动放弃任务。
      * 线程池初始化
      */
     private static void init() {
 
         threadPoolExecutor = new ThreadPoolExecutor(
-                8,
-                8,
+                17,
+                30,
                 1,
-                TimeUnit.DAYS,
+                TimeUnit.HOURS,
                 new ArrayBlockingQueue<>(200),
                 new ThreadFactoryBuilder()
                         .setNameFormat("consumer-queue-thread-%d")

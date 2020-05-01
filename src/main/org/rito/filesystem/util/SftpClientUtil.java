@@ -2,6 +2,9 @@ package org.rito.filesystem.util;
 
 import com.jcraft.jsch.*;
 import org.rito.filesystem.JobService;
+import org.rito.filesystem.constant.Constant;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
 
@@ -10,8 +13,7 @@ import java.io.InputStream;
  * @date 2020/4/29
  **/
 public class SftpClientUtil {
-    private static String cfgPath = "src/main/resources/config/sftp.properties";
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(SftpClientUtil.class);
     /**
      * 创建一个新的sftp连接
      *
@@ -23,11 +25,13 @@ public class SftpClientUtil {
 
     private static ChannelSftp init() {
 
-        String userName = JobService.getHashMap().get("userName");
-        String hostName = JobService.getHashMap().get("hostName");
-        String port = JobService.getHashMap().get("port");
-        String password = JobService.getHashMap().get("password");
+        String userName = JobService.getHashMap().get(Constant.userName);
+        String hostName = JobService.getHashMap().get(Constant.hostName);
+        String port = JobService.getHashMap().get(Constant.port);
+        String password = JobService.getHashMap().get(Constant.password);
         ChannelSftp sftp = null;
+        long startTime = System.currentTimeMillis();
+
         try {
 
             JSch jSch = new JSch();
@@ -42,7 +46,9 @@ public class SftpClientUtil {
         } catch (JSchException e) {
             e.printStackTrace();
         }
+        long endTime = System.currentTimeMillis();
 
+        LOGGER.info("创建连接时间" + (endTime - startTime) / 1000 + "秒");
         return sftp;
 
     }
@@ -50,7 +56,6 @@ public class SftpClientUtil {
 
     /**
      * 下载文件
-     *
      *
      * @param sftp     新的sftp连接
      * @param fileName 文件名称
